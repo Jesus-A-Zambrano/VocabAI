@@ -1,0 +1,59 @@
+# Node.js dependencies
+
+node\_modules/
+
+# Build output
+
+dist/
+\*.tsbuildinfo
+
+# Environment variables
+
+.env
+.env.\*
+
+# Logs
+
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log\*
+lerna-debug.log\*
+
+# Coverage directory
+
+coverage/
+.nyc\_output/
+
+# Editor directories and files
+
+.vscode/
+.idea/
+\*.suo
+*.ntvs*
+\*.njsproj
+\*.sln
+
+# OS-specific files
+
+.DS\_Store
+Thumbs.db
+
+# TypeORM metadata (if using migrations)
+
+migrations/**/\*.ts
+migrations/**/\*.js
+
+# Python caches (if any Python microservices)
+
+**pycache**/
+\*.py\[cod]
+\*\$py.class
+
+# Optional: Swagger UI docs
+
+swagger-ui/
+
+# Optional: Debug
+
+.debug.log
