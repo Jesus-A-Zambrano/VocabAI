@@ -10,10 +10,10 @@ function App() {
     <Routes>
       <Route element={<DefaultLayout />}>
         <Route index element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/registro" element={<Registro/>} />
-        <Route path="/home/app" element={<AppTarjeta />} />
       </Route>
+      <Route path="/login" element={<Login />} />
+      <Route path="/registro" element={<Registro/>} />
+      <Route path="/home/app" element={<AppTarjeta />} />
     </Routes>
   );
 }
