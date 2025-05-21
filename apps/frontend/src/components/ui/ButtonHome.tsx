@@ -4,11 +4,19 @@ import { cn } from "clsx-for-tailwind";
 interface Props {
   secundario?: boolean;
   children: ReactNode;
+  type?: "button" | "submit" | "reset";
+  onClick?: () => void;
 }
-const ButtonHome = ({ secundario = false, children }: Props) => {
+const ButtonHome = ({
+  secundario = false,
+  children,
+  type = "button",
+  onClick,
+}: Props) => {
   return (
     <button
-      type="button"
+      type={type}
+      onClick={onClick}
       className={cn(
         "px-4 py-2 rounded font-bold",
         "transition-all",
