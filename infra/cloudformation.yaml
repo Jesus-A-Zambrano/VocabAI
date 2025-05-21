@@ -1,0 +1,88 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  AWS CloudFormation template to deploy the backend application on an EC2 instance
+  in Sao Paulo (sa-east-1) using the Free Tier.
+
+Parameters:
+  InstanceType:
+    Description: EC2 instance type
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+      - t3.micro
+    ConstraintDescription: Must be a Free Tier eligible instance type.
+
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance.
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: Must be the name of an existing EC2 KeyPair.
+
+  RepositoryURL:
+    Description: The URL of the Git repository to clone.
+    Type: String
+    Default: "https://github.com/your-username/your-repo.git" # Replace with actual repo URL
+
+Resources:
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyName
+      ImageId: ami-07b14488da8ea02a0 # Amazon Linux AMI 2018.03 HVM SSD for sa-east-1
+      Region: sa-east-1
+      SecurityGroups:
+        - !Ref InstanceSecurityGroup
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          # Update yum and install Docker & git
+          yum update -y
+          amazon-linux-extras install docker -y # For Amazon Linux 2
+          # yum install docker -y # Uncomment for other Linux distributions if needed
+          yum install -y git
+
+          # Start Docker service
+          service docker start
+          # systemctl start docker # Uncomment for systems using systemd if needed
+
+          # Clone the repository
+          mkdir /app && cd /app
+          git clone ${RepositoryURL} .
+
+          # Navigate to backend directory
+          cd backend # Assuming 'backend' is the folder name in the repo
+
+          # Build the Docker image
+          docker build -t backend-app .
+
+          # Run the Docker container
+          # Ensure environment variables like PORT, CLERK_SECRET_KEY, etc.,
+          # are passed to the container if they are not already part of the Docker image build process.
+          # Example: docker run -d -p 3000:3000 -e PORT=3000 -e CLERK_SECRET_KEY='your_secret_key' backend-app
+          docker run -d -p 3000:3000 backend-app > /var/log/app.log 2>&1 &
+
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable SSH access and HTTP access on port 3000
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 3000 # Port the backend runs on
+          ToPort: 3000
+          CidrIp: 0.0.0.0/0
+
+Outputs:
+  InstanceId:
+    Description: InstanceId of the newly created EC2 instance
+    Value: !Ref EC2Instance
+  PublicDNS:
+    Description: Public DNSName of the newly created EC2 instance
+    Value: !GetAtt EC2Instance.PublicDnsName
+  PublicIP:
+    Description: Public IP address of the newly created EC2 instance
+    Value: !GetAtt EC2Instance.PublicIp
