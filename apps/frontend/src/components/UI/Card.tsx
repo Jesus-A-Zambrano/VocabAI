@@ -1,10 +1,11 @@
-type CardColor = 'orange' | 'blue' | 'green' | 'purple';
+type CardColor = 'orange' | 'blue' | 'green' | 'purple' | 'red';
 
 const colorClasses: Record<CardColor, string> = {
     orange: "hover:bg-orange-100 border-t-orange-600",
     blue: "hover:bg-blue-100 border-t-blue-600",
     green: "hover:bg-green-100 border-t-green-600",
     purple: "hover:bg-purple-100 border-t-purple-600",
+    red: "hover:bg-red-100 border-t-red-600",
 };
 
 interface CardProps {

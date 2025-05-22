@@ -1,24 +1,31 @@
-import Card from "../../UI/Card"
+import Card from "../../UI/Card";
 
-const SesionResultado: React.FC = () => {
-    return (
-        <div className="flex justify-center gap-24 mt-12">
-        <Card
-        color="orange"
-        titulo="Respuestas Correctas"
-        mensaje="2"
-        >
-        </Card>
-        <Card
-        color="orange"
-        titulo="Respuestas Incorrectas"
-        mensaje="2"
-        >
-        </Card>
-
-
-        </div>
-    )
+interface ResultadoProps {
+    respuestas: {
+        wordId: number;
+        correct: boolean;
+        answeredAt: string;
+    }[];
 }
 
-export default SesionResultado
+const SesionResultado: React.FC<ResultadoProps> = ({ respuestas }) => {
+    const correctas = respuestas.filter(r => r.correct).length;
+    const incorrectas = respuestas.filter(r => !r.correct).length;
+
+    return (
+        <div className="flex justify-center gap-24 mt-12">
+            <Card
+                color="green"
+                titulo="Respuestas Correctas"
+                mensaje={`${correctas}`}
+            />
+            <Card
+                color="red"
+                titulo="Respuestas Incorrectas"
+                mensaje={`${incorrectas}`}
+            />
+        </div>
+    );
+};
+
+export default SesionResultado;
