@@ -5,43 +5,43 @@ const FooterLayout = () => {
 
   const teamMembers = [
     {
-      name: "Percy",
+      name: "Percy Sebastian López M.",
       role: "Frontend",
       social: {
-        github: "https://twitter.com/percy",
-        linkedin: "https://linkedin.com/in/percy",
+        email: "p.sebastian.23.11.99@gmail.com",
+        linkedin: "www.linkedin.com/in/p-sebastian-l-m-015413261",
       },
     },
     {
-      name: "Jesús",
+      name: "Jesús Zambrano",
       role: "Analista",
       social: {
-        twitter: "https://twitter.com/jesus",
-        linkedin: "https://linkedin.com/in/jesus",
+        email: "jesusalbertoazb@gmail.com",
+        linkedin: "https://www.linkedin.com/in/jesus-zambrano-barrios/",
       },
     },
     {
-      name: "Valdi",
+      name: "Jorge Valderrama",
       role: "Analista",
       social: {
-        twitter: "https://twitter.com/valdi",
+        email: "jvfermoso@gmail.com",
         linkedin: "https://linkedin.com/in/valdi",
       },
     },
     {
-      name: "Danny",
+      name: "Danny Mejía",
       role: "Backend",
       social: {
-        twitter: "https://twitter.com/danny",
-        linkedin: "https://linkedin.com/in/danny",
+        email: "dannym.mejia@gmail.com",
+        linkedin: "https://www.linkedin.com/in/danny-mv/",
       },
     },
     {
-      name: "Leodan",
+      name: "Leodan Valda",
       role: "FrontEnd",
       social: {
-        twitter: "https://twitter.com/leodan",
-        linkedin: "https://linkedin.com/in/leodan",
+        email: "lvalda.dev@gmail.com",
+        linkedin: " https://www.linkedin.com/in/lenzx",
       },
     },
   ];
@@ -57,12 +57,12 @@ const FooterLayout = () => {
               <p className="text-sm text-gray-300">{member.role}</p>
               <div className="mt-2 flex justify-center space-x-4">
                 <a
-                  href={member.social.github}
+                  href={`mailto:${member.social.email}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-400 hover:text-blue-500"
                 >
-                  GitHub
+                  E-mail
                 </a>
                 <a
                   href={member.social.linkedin}
