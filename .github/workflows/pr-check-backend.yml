@@ -1,0 +1,45 @@
+name: Comprueba bump de versión
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+    paths:
+      - 'apps/backend/**'
+
+jobs:
+  check-version:
+    name: 🔍 Comprueba bump de versión
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout de main (base)
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: main-base
+
+      - name: Obtener versión en main
+        id: mainpkg
+        run: |
+          cd main-base/apps/backend
+          echo "VERSION_MAIN=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
+
+      - name: Checkout de PR (head)
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: pr-head
+
+      - name: Obtener versión en PR
+        id: prpkg
+        run: |
+          cd pr-head/apps/backend
+          echo "VERSION_PR=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
+
+      - name: Comparar versiones
+        run: |
+          if [ "${{ steps.prpkg.outputs.VERSION_PR }}" = "${{ steps.mainpkg.outputs.VERSION_MAIN }}" ]; then
+            echo "::error ::No has incrementado la versión en package.json"
+            exit 1
+          fi
