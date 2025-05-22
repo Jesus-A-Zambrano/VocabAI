@@ -1,24 +1,19 @@
-import { useUser } from "@clerk/clerk-react";
+import { RedirectToSignIn, SignedIn, SignedOut } from "@clerk/clerk-react";
 import type { ReactNode } from "react";
-import { Navigate } from "react-router";
 
 interface Props {
   children: ReactNode;
 }
 const ProtectedRoute = ({ children }: Props) => {
-  const { isLoaded, isSignedIn } = useUser();
+  return (
+    <>
+      <SignedIn>{children}</SignedIn>
 
-  if (!isLoaded) {
-    return <div>Cargando...</div>;
-  }
-
-  if (!isSignedIn) {
-    return <Navigate to="/" />;
-  }
-
-  // console.log(user.id);
-
-  return children;
+      <SignedOut>
+        <RedirectToSignIn />
+      </SignedOut>
+    </>
+  );
 };
 
 export default ProtectedRoute;
