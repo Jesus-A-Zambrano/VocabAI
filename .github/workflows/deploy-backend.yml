@@ -58,6 +58,7 @@ jobs:
               --name backend-app \
               -p 80:3000 \
               -e CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }} \
+              -e CLERK_PUBLISHABLE_KEY=${{ secrets.CLERK_PUBLISHABLE_KEY }} \
               -e CLERK_FRONTEND_API=${{ secrets.CLERK_FRONTEND_API }} \
               ghcr.io/${{ github.repository_owner }}/backend-app:${{ steps.get-version.outputs.VERSION }}
           EOF
