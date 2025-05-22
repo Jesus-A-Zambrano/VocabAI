@@ -1,4 +1,4 @@
-name: Backend CI
+name: CI
 
 on:
   pull_request:
@@ -13,10 +13,11 @@ jobs:
     name: Comprueba bump de versión
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout de main (base de la PR)
+      - name: Chequear main
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.pull_request.base.sha }}
+          # Trae sólo la rama base (último main conocido antes del PR)
+          ref: ${{ github.event.pull_request.base.ref }}
           path: main-base
 
       - name: Obtener versión en main
@@ -25,10 +26,10 @@ jobs:
           cd main-base/apps/backend
           echo "VERSION_MAIN=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
 
-      - name: Checkout de la PR (head)
+      - name: Chequear PR
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.pull_request.head.ref }}
           path: pr-head
 
       - name: Obtener versión en PR
@@ -45,29 +46,29 @@ jobs:
           fi
 
   build-and-push:
-    name: Build & Push Docker (sólo tras merge)
+    name: Build & Push Docker en merge
     needs: check-version
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Obtener versión final
+      - name: Get version from package.json
         id: pkg
         run: |
           cd apps/backend
           echo "VERSION=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
-      - name: Log in a GHCR
+      - name: Log in to GHCR
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build de la imagen
+      - name: Build image
         run: |
           cd apps/backend
           docker build -t ghcr.io/${{ github.repository_owner }}/backend-app:${{ steps.pkg.outputs.VERSION }} .
           docker tag ghcr.io/${{ github.repository_owner }}/backend-app:${{ steps.pkg.outputs.VERSION }} ghcr.io/${{ github.repository_owner }}/backend-app:latest
-      - name: Push de las imágenes
+      - name: Push images
         run: |
           docker push ghcr.io/${{ github.repository_owner }}/backend-app:${{ steps.pkg.outputs.VERSION }}
           docker push ghcr.io/${{ github.repository_owner }}/backend-app:latest
