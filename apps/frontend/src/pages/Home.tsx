@@ -4,6 +4,7 @@ import CardHome from "../components/ui/CardHome";
 import iconFoco from "../assets/icons/foco.png";
 import iconTablero from "../assets/icons/tablero.png";
 import iconBarras from "../assets/icons/barras.png";
+import FooterLayout from "../components/layout/Home/FooterLayout";
 
 const Home = () => {
   return (
@@ -29,6 +30,7 @@ const Home = () => {
           parrafo="Visualiza tu avance y recibe informes detallados sobre tu aprendizaje"
         />
       </ArticleHome>
+      <FooterLayout />
     </>
   );
 };
