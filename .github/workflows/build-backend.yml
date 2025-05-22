@@ -31,10 +31,10 @@ jobs:
       - name: Build Docker image
         run: |
           cd apps/backend
-          docker build -t ghcr.io/${{ github.repository_owner }}/backend-app:${{ steps.pkg.outputs.VERSION }} .
-          docker tag ghcr.io/${{ github.repository_owner }}/backend-app:${{ steps.pkg.outputs.VERSION }} ghcr.io/${{ github.repository_owner }}/backend-app:latest
+          docker build -t ghcr.io/${{ github.actor }}/backend-app:${{ steps.pkg.outputs.VERSION }} .
+          docker tag ghcr.io/${{ github.actor }}/backend-app:${{ steps.pkg.outputs.VERSION }} ghcr.io/${{ github.repository_owner }}/backend-app:latest
 
       - name: Push Docker images
         run: |
-          docker push ghcr.io/${{ github.repository_owner }}/backend-app:${{ steps.pkg.outputs.VERSION }}
-          docker push ghcr.io/${{ github.repository_owner }}/backend-app:latest
+          docker push ghcr.io/${{ github.actor }}/backend-app:${{ steps.pkg.outputs.VERSION }}
+          docker push ghcr.io/${{ github.actor }}/backend-app:latest
