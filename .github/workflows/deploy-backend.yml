@@ -1,0 +1,61 @@
+name: Deploy to EC2
+
+on:
+  # 1) Manualmente
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Tag de la imagen a desplegar (p. ej. 0.1.1 o latest)'
+        required: false
+        default: ''
+
+  # 2) Tras completarse con éxito tu workflow de Build & Push
+  workflow_run:
+    workflows: ["Build & Push Backend Docker"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    # Solo si:
+    # - Se disparó por workflow_run y el build terminó OK
+    # - O se disparó manualmente (dispatch)
+    if: >
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.conclusion == 'success')
+      ||
+      (github.event_name == 'workflow_dispatch')
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Determine version to deploy
+        id: get-version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ github.event.inputs.version }}" ]; then
+            echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            # Cuando venga de workflow_run, tomamos la versión actual de package.json
+            VERSION=$(jq -r .version apps/backend/package.json)
+            echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Start SSH agent
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            docker stop backend-app || true
+            docker rm backend-app  || true
+            docker pull ghcr.io/${{ github.repository_owner }}/backend-app:${{ steps.get-version.outputs.VERSION }}
+            docker run -d \
+              --name backend-app \
+              -p 80:80 \
+              ghcr.io/${{ github.repository_owner }}/backend-app:${{ steps.get-version.outputs.VERSION }}
+          EOF
