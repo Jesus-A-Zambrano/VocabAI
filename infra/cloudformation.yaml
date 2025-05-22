@@ -30,7 +30,6 @@ Resources:
       InstanceType: !Ref InstanceType
       KeyName: !Ref KeyName
       ImageId: ami-07b14488da8ea02a0 # Amazon Linux AMI 2018.03 HVM SSD for sa-east-1
-      Region: sa-east-1
       SecurityGroups:
         - !Ref InstanceSecurityGroup
       UserData:
@@ -44,24 +43,13 @@ Resources:
 
           # Start Docker service
           service docker start
-          # systemctl start docker # Uncomment for systems using systemd if needed
 
-          # Clone the repository
-          mkdir /app && cd /app
-          git clone ${RepositoryURL} .
-
-          # Navigate to backend directory
-          cd backend # Assuming 'backend' is the folder name in the repo
-
-          # Build the Docker image
-          docker build -t backend-app .
-
-          # Run the Docker container
-          # Ensure environment variables like PORT, CLERK_SECRET_KEY, etc.,
-          # are passed to the container if they are not already part of the Docker image build process.
-          # Example: docker run -d -p 3000:3000 -e PORT=3000 -e CLERK_SECRET_KEY='your_secret_key' backend-app
-          docker run -d -p 3000:3000 backend-app > /var/log/app.log 2>&1 &
-
+          systemctl start docker # Uncomment for systems using systemd if needed
+          # Enable Docker service to start on boot
+          usermod -a -G docker ec2-user # Add ec2-user to the docker group
+          
+          systemctl enable docker
+          
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
