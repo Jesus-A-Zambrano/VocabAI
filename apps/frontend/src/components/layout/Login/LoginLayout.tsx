@@ -1,7 +1,8 @@
 import { SignIn } from "@clerk/clerk-react";
 
 const LoginLayout = () => {
-  return <SignIn afterSignInUrl={"/app"} />;
+
+  return <SignIn forceRedirectUrl={"/app"} />;
 };
 
 export default LoginLayout;
