@@ -4,16 +4,25 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Registro from "./pages/Registro";
 import AppTarjeta from "./pages/AppTarjeta";
+import ProtectedRoute from "./components/ui/ProtectedRoute";
 
 function App() {
   return (
     <Routes>
       <Route element={<DefaultLayout />}>
         <Route index element={<Home />} />
+
+        <Route path="/login" element={<Login />} />
+        <Route path="/registro" element={<Registro />} />
+        <Route
+          path="/app"
+          element={
+            <ProtectedRoute>
+              <AppTarjeta />
+            </ProtectedRoute>
+          }
+        />
       </Route>
-      <Route path="/login" element={<Login />} />
-      <Route path="/registro" element={<Registro/>} />
-      <Route path="/home/app" element={<AppTarjeta />} />
     </Routes>
   );
 }
