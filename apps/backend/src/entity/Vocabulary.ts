@@ -11,10 +11,16 @@ export class Vocabulary {
     word!: string;
 
     @Column()
-    definition!: string;
+    translation!: string; // Added translation
 
     @Column()
-    example!: string;
+    description!: string; // Renamed definition to description
+
+    @Column()
+    types!: string; // Added types
+
+    @Column()
+    level!: string; // Added level
 
     // One-to-many relationship with UserVocabulary
     @OneToMany(() => UserVocabulary, userVocabulary => userVocabulary.vocabulary)

@@ -7,11 +7,16 @@ import config from '../config'; // Import the config
 // For now, we'll simulate the response.
 
 interface Suggestion {
+  id: number; // Added id
   word: string;
-  definition: string;
-  example: string;
+  translation: string;
+  description: string;
+  types: string;
+  level: string;
 }
 
+// Note: The level parameter is still here for now as the python service might still use it.
+// We are just removing it from the *backend* API endpoint.
 export const getWordSuggestions = async (level: string, userId: string): Promise<Suggestion[]> => {
   console.log(`Calling Python microservice for user ${userId} at level ${level}`);
   
@@ -32,22 +37,31 @@ export const getWordSuggestions = async (level: string, userId: string): Promise
   // Simulate a network delay
   await new Promise(resolve => setTimeout(resolve, 500));
 
-  // Simulate a response from the Python microservice
+  // Simulate a response from the Python microservice with updated structure
   const mockSuggestions: Suggestion[] = [
     {
+      id: 1,
       word: 'Eloquent',
-      definition: 'Fluent or persuasive in speaking or writing.',
-      example: 'She was an eloquent speaker, able to captivate her audience.',
+      translation: 'Elocuente', // Example translation
+      description: 'Fluent or persuasive in speaking or writing.',
+      types: 'Adjective', // Example type
+      level: 'Avanzado', // Example level
     },
     {
+      id: 2,
       word: 'Ephemeral',
-      definition: 'Lasting for a very short time.',
-      example: 'The beauty of the cherry blossoms is ephemeral.',
+      translation: 'Efímero', // Example translation
+      description: 'Lasting for a very short time.',
+      types: 'Adjective', // Example type
+      level: 'Intermedio', // Example level
     },
     {
+      id: 3,
       word: 'Serendipity',
-      definition: 'The occurrence and development of events by chance in a happy or beneficial way.',
-      example: 'Finding that old photograph was a moment of serendipity.',
+      translation: 'Serendipia', // Example translation
+      description: 'The occurrence and development of events by chance in a happy or beneficial way.',
+      types: 'Noun', // Example type
+      level: 'Avanzado', // Example level
     },
   ];
 
