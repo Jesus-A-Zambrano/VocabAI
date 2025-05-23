@@ -8,6 +8,7 @@ const userProfileSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   email: z.string().email('Invalid email format'),
   age: z.number().int().positive('Age must be a positive integer').optional(),
+  level: z.string().optional(), // Added level to the schema, making it optional
 });
 
 // Define a type based on the Zod schema

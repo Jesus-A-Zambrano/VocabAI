@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import express, { Application, Request, Response, NextFunction, ErrorRequestHandler } from 'express';
 import * as dotenv from 'dotenv';
+import cors from 'cors'; // Import cors
 import { clerkMiddleware  } from '@clerk/express'; // Corrected import
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
@@ -16,6 +17,9 @@ dotenv.config();
 
 const app: Application = express();
 const port = config.port; // Use port from config
+
+// Use cors middleware to allow requests from any origin
+app.use(cors());
 
 // Initialize TypeORM Data Source
 AppDataSource.initialize()
@@ -44,10 +48,14 @@ AppDataSource.initialize()
                   bearerFormat: 'JWT',
                 },
               },
-              schemas: { // Define schemas here
-                UserProfile: { // This name should match the $ref in users.ts
+              schemas: {
+                UserProfile: { // Updated UserProfile schema
                   type: 'object',
                   properties: {
+                    id: {
+                      type: 'string',
+                      description: 'Clerk user ID'
+                    },
                     name: {
                       type: 'string',
                       description: `User's name`
@@ -61,30 +69,55 @@ AppDataSource.initialize()
                       type: 'integer',
                       format: 'int32',
                       description: `User's age (optional)`
+                    },
+                    level: {
+                      type: 'string',
+                      description: `User's English level (optional)`,
+                       enum: [
+                         'Principiante',
+                         'Intermedio',
+                         'Avanzado'
+                       ] // Added enum for level
                     }
                   },
-                  required: ['name', 'email'] // Zod schema requires name and email
+                  required: ['id', 'name', 'email'] // Added id to required
                 },
-                Suggestion: { // Schema for vocabulary suggestions
+                Suggestion: { // Updated Schema for vocabulary suggestions
                   type: 'object',
                   properties: {
+                    id: {
+                      type: 'integer',
+                      description: 'The unique identifier of the vocabulary word.'
+                    },
                     word: {
                       type: 'string',
-                      description: 'The suggested word'
+                      description: 'The English word.'
                     },
-                    definition: {
+                    translation: {
                       type: 'string',
-                      description: 'The definition of the word'
+                      description: 'The translation of the word in Spanish.'
                     },
-                    example: {
-
+                    description: {
                       type: 'string',
-                      description: 'An example sentence using the word'
+                      description: 'The definition of the word.'
+                    },
+                    types: {
+                      type: 'string',
+                      description: 'The type of word (e.g., Noun, Verb, Adjective).'
+                    },
+                    level: {
+                      type: 'string',
+                      description: 'The difficulty level of the word.',
+                      enum: [
+                        'Principiante',
+                        'Intermedio',
+                        'Avanzado'
+                      ]
                     }
                   },
-                  required: ['word', 'definition', 'example']
+                  required: ['id', 'word', 'translation', 'description', 'types', 'level']
                 },
-                ProgressUpdate: { // Schema for progress updates
+                ProgressUpdate: {
                   type: 'object',
                   properties: {
                     level: {
@@ -109,7 +142,7 @@ AppDataSource.initialize()
               }
             }
           },
-          apis: ['./src/routes/*.ts', './dist/routes/*.js'], // Path to the API routes (include .js for compiled TS)
+          apis: ['./src/routes/*.ts', './dist/routes/*.js'],
         };
 
         const swaggerSpec = swaggerJsdoc(swaggerOptions);
@@ -135,7 +168,7 @@ AppDataSource.initialize()
         
           if (err instanceof ZodError) {
             res.status(400).json({ errors: err.errors, message: 'Validation error' });
-            return;                // return *undefined* – OK for `void`
+            return;
           }
         
           if (err.name === 'ClerkExpressRequireAuthError') {

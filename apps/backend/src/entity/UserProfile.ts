@@ -18,6 +18,11 @@ export class UserProfile {
     })
     age?: number;
 
+    @Column({
+        nullable: true // Assuming level might be optional initially
+    })
+    level?: string; // Added level field
+
     // One-to-many relationship with UserVocabulary
     @OneToMany(() => UserVocabulary, userVocabulary => userVocabulary.user)
     learnedVocabulary!: UserVocabulary[];
