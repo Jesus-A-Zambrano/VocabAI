@@ -1,36 +1,54 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    ManyToOne,
+    JoinColumn,
+    Unique,
+    RelationId,
+  } from "typeorm";
 import { UserProfile } from "./UserProfile";
 import { Vocabulary } from "./Vocabulary"; // Import the Vocabulary entity
 
 @Entity()
+@Unique(["user", "vocabulary"])  // evita que un mismo usuario repita la misma palabra
 export class UserVocabulary {
+  @PrimaryGeneratedColumn()
+  id!: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @ManyToOne(
+    () => UserProfile,
+    user => user.learnedVocabulary,
+    { onDelete: "CASCADE" }      // al borrar un UserProfile, borra estos registros
+  )
+  @JoinColumn({ name: "userId" })
+  user!: UserProfile;
 
-    // Many-to-one relationship with UserProfile
-    @ManyToOne(() => UserProfile, userProfile => userProfile.learnedVocabulary)
-    @JoinColumn({ name: "userId" }) // This column will store the user's ID
-    user: UserProfile;
+  @RelationId((uv: UserVocabulary) => uv.user)
+  userId!: number;
 
-    // Many-to-one relationship with Vocabulary
-    @ManyToOne(() => Vocabulary, vocabulary => vocabulary.userLearners)
-    @JoinColumn({ name: "vocabularyId" }) // This column will store the vocabulary word's ID
-    vocabulary: Vocabulary;
+  @ManyToOne(
+    () => Vocabulary,
+    vocab => vocab.userLearners,
+    { onDelete: "CASCADE" }      // al borrar un Vocabulary, borra estos registros
+  )
+  @JoinColumn({ name: "vocabularyId" })
+  vocabulary!: Vocabulary;
 
-    @Column({
-        type: "datetime",
-        default: () => "CURRENT_TIMESTAMP"
-    })
-    learnedAt: Date;
+  @RelationId((uv: UserVocabulary) => uv.vocabulary)
+  vocabularyId!: number;
 
-    @Column({
-        type: "boolean",
-        default: false,
-        comment: "Indica si el usuario acertó (true) o falló (false) al aprender la palabra"
-    })
-    correct: boolean;
+  @Column({
+    type: "datetime",
+    default: () => "CURRENT_TIMESTAMP",
+  })
+  learnedAt!: Date;
 
-    // We can also add a unique constraint to prevent a user from learning the same word multiple times
-    // @Index(["user", "vocabulary"], { unique: true })
+  @Column({
+    type: "boolean",
+    default: false,
+    comment: "true si el usuario acertó, false si falló",
+  })
+  correct!: boolean;
 }
+

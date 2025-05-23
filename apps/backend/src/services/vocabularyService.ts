@@ -1,3 +1,4 @@
+import { Not, In } from 'typeorm';
 import { AppDataSource } from '../data-source';
 import { Vocabulary } from '../entity/Vocabulary';
 import { UserVocabulary } from '../entity/UserVocabulary';
@@ -21,7 +22,21 @@ export const getSuggestionsService = async (userId: string) => {
     // Get the user's level from the userProfile object. Provide a default if not set.
     const { level } = userProfile; // Using a default level
     // Call the Python microservice via the service layer
-    const suggestions = await getWordSuggestions(level, userId);
+    const learned = await userVocabularyRepository.find({
+      where: { user: { id: userProfile.id } },
+      relations: ['vocabulary'],
+    });
+    const learnedIds = learned.map(l => l.vocabularyId);
+
+    // Buscar palabras del nivel, excluyendo las ya aprendidas
+    const suggestions = await vocabularyRepository.find({
+      where: {
+        level,
+        ...(learnedIds.length > 0 && { id: Not(In(learnedIds)) }),
+      },
+      order: { frequencyCount: 'DESC' },
+      take: 10,
+    });
 return suggestions;  
   } catch (error) {
     console.error('Error fetching suggestions:', error);

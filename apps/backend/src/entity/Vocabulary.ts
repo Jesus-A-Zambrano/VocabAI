@@ -3,26 +3,31 @@ import { UserVocabulary } from "./UserVocabulary"; // Import the linking entity
 
 @Entity()
 export class Vocabulary {
+  @PrimaryGeneratedColumn()
+  id!: number;
 
-    @PrimaryGeneratedColumn()
-    id!: number;
+  @Column()
+  word!: string;
 
-    @Column()
-    word!: string;
+  @Column()
+  translation!: string;
 
-    @Column()
-    translation!: string; // Added translation
+  @Column()
+  description!: string;
 
-    @Column()
-    description!: string; // Renamed definition to description
+  @Column()
+  types!: string;
 
-    @Column()
-    types!: string; // Added types
+  @Column()
+  level!: string;
+  
+  @Column({ type: "integer", default: 0 })
+  frequencyCount!: number;
 
-    @Column()
-    level!: string; // Added level
-
-    // One-to-many relationship with UserVocabulary
-    @OneToMany(() => UserVocabulary, userVocabulary => userVocabulary.vocabulary)
-    userLearners!: UserVocabulary[];
+  @OneToMany(
+    () => UserVocabulary,
+    uv => uv.vocabulary,
+    { cascade: ["remove"] }       // si borras un Vocabulary, eliminará sus UserVocabulary
+  )
+  userLearners!: UserVocabulary[];
 }
