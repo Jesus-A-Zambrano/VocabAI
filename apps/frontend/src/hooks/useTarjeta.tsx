@@ -10,6 +10,7 @@ export function useTarjetasByUserId(userId: number, enable: boolean) {
   const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+      
       if (!enable) return;
       let isMounted = true;
       (async () => {
@@ -17,8 +18,10 @@ export function useTarjetasByUserId(userId: number, enable: boolean) {
         setError(null);
         try {
           const token = await getToken();
+          console.log(token);
           if (!token) throw new Error("No autenticado");
-          const data = await TarjetasService.getTarjetasByUserId(userId, token);
+          const data = await TarjetasService.getTarjetasByUserId(token);
+          console.log(data);
           if (isMounted) setTarjetas(data);
         } catch (err: any) {
           if (isMounted) setError(err.message || "Error al cargar tarjetas");
@@ -62,15 +65,18 @@ export function useTarjetas() {
 }
 
 export function useEnviarRespuestas() {
+  const { getToken } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  const enviar = async (respuestas: any[], token: string) => {
+  const enviar = async (respuestas: any[]) => {
     setLoading(true);
     setError(null);
     setSuccess(false);
     try {
+      const token = await getToken();
+      if (!token) throw new Error("No autenticado");
       await TarjetasService.postRespuestas(respuestas, token);
       setSuccess(true);
     } catch (err: any) {

@@ -39,3 +39,22 @@ export const saveUserProfile = async (userId: string, profileData: UserProfileIn
     const savedProfile = await userProfileRepository.save(userProfile);
     return savedProfile;
 };
+
+export const createUserProfile = async (userId: string): Promise<UserProfile | null> => {
+    // Puedes personalizar los valores por defecto aquí
+    const defaultProfile = {
+        name: 'Usuario',
+        email: `${userId}@example.com`, // O intenta obtener el email real si lo tienes
+        level: 'Principiante',
+    };
+
+    // Valida el perfil con Zod
+    const parsed = userProfileSchema.safeParse(defaultProfile);
+    if (!parsed.success) {
+        return null;
+    }
+
+    // Crea y guarda el perfil
+    const userProfile = userProfileRepository.create({ id: userId, ...parsed.data });
+    return await userProfileRepository.save(userProfile);
+};

@@ -1,9 +1,10 @@
 interface Tarjeta {
     id: number;
-    palabra: string;
-    traduccion: string;
-    definicion: string;
-    categoria: string[];
+    word: string;
+    translation: string;
+    description: string;
+    types: string[];
+    level: string;
 }
 
 export type { Tarjeta };

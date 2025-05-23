@@ -22,7 +22,7 @@ const TarjetaInteractiva: React.FC<TarjetaInteractivaProps> = ({
     const [mostrarRespuesta, setMostrarRespuesta] = useState(false);
 
     const verificarRespuesta = () => {
-        const esCorrecto = respuesta.trim().toLowerCase() === tarjeta.traduccion.toLowerCase();
+        const esCorrecto = respuesta.trim().toLowerCase() === tarjeta.word.toLowerCase();
         setEstado(esCorrecto ? 'correcto' : 'incorrecto');
         setMostrarRespuesta(true);
         onAnswer(esCorrecto);
@@ -46,7 +46,7 @@ const TarjetaInteractiva: React.FC<TarjetaInteractivaProps> = ({
             {!mostrarRespuesta ? (
                 <div className="bg-orange-500 text-white p-6 rounded-lg shadow h-full flex justify-center flex-col">
                     <p className="text-sm uppercase">Traduce al inglés:</p>
-                    <h2 className="text-3xl font-bold mb-4">{tarjeta.palabra}</h2>
+                    <h2 className="text-3xl font-bold mb-4">{tarjeta.translation}</h2>
 
                     <Input
                         label='Respuesta'
@@ -68,7 +68,7 @@ const TarjetaInteractiva: React.FC<TarjetaInteractivaProps> = ({
             ) : (
                 <div className="bg-white border border-orange-500 p-6 rounded-lg h-full flex flex-col justify-center">
                     <h4 className="text-orange-500 font-semibold text-sm">Respuesta correcta</h4>
-                    <h2 className="text-3xl font-bold text-gray-800 mt-2">{tarjeta.traduccion}</h2>
+                    <h2 className="text-3xl font-bold text-gray-800 mt-2">{tarjeta.word}</h2>
 
                     <div className="bg-gray-100 p-4 mt-4 rounded">
                         <p className="font-semibold text-sm text-gray-700 mb-1">Ejemplo de uso:</p>
@@ -76,7 +76,7 @@ const TarjetaInteractiva: React.FC<TarjetaInteractivaProps> = ({
 
                     {estado === 'incorrecto' && (
                         <div className="mt-4 bg-red-100 text-red-700 px-4 py-2 rounded">
-                            ✘ Incorrecto. La respuesta correcta es "<strong>{tarjeta.traduccion}</strong>"
+                            ✘ Incorrecto. La respuesta correcta es "<strong>{tarjeta.word}</strong>"
                         </div>
                     )}
 

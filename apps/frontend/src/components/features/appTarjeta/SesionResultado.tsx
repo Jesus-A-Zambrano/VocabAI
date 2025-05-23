@@ -2,9 +2,9 @@ import Card from "../../UI/Card";
 
 interface ResultadoProps {
     respuestas: {
-        wordId: number;
+        vocabularyId: number;
         correct: boolean;
-        answeredAt: string;
+        learnedAt: string;
     }[];
 }
 

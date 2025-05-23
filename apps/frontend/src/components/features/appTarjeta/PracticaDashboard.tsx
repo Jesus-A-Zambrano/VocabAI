@@ -4,12 +4,12 @@ import TarjetaInteractiva from "./TarjetaPractica";
 import Card from "../../UI/Card";
 import NavegationBar from "./SesionProgresion";
 import SesionResultado from "./SesionResultado";
-import { useTarjetasByUserIdtest, useEnviarRespuestasTest } from "../../../hooks/useTarjetaTest";
+import { useTarjetasByUserId, useEnviarRespuestas } from "../../../hooks/useTarjeta";
 
 interface UsuarioPalabraRespuesta {
-  wordId: number;
+  vocabularyId: number;
   correct: boolean;
-  answeredAt: string;
+  learnedAt: string;
 }
 
 const PracticaDashboard: React.FC = () => {
@@ -17,8 +17,8 @@ const PracticaDashboard: React.FC = () => {
   const [terminado, setTerminado] = useState(false);
   const [userResponses, setUserResponses] = useState<UsuarioPalabraRespuesta[]>([]);
   const [empezado, setEmpezado] = useState(false);
-  const { tarjetas, loading, error } = useTarjetasByUserIdtest(1, empezado);
-  const { enviar, loading: enviando, error: errorEnvio, success } = useEnviarRespuestasTest();
+  const { tarjetas, loading, error } = useTarjetasByUserId(1, empezado);
+  const { enviar, loading: enviando, error: errorEnvio, success } = useEnviarRespuestas();
 
   const respuestasFinales = useRef<UsuarioPalabraRespuesta[]>([]);
   const enviado = useRef(false);
@@ -32,9 +32,9 @@ const PracticaDashboard: React.FC = () => {
 
   const handleAnswer = (correct: boolean) => {
     const respuesta: UsuarioPalabraRespuesta = {
-      wordId: tarjetas[indexActual].id,
+      vocabularyId: tarjetas[indexActual].id,
       correct,
-      answeredAt: new Date().toISOString(),
+      learnedAt: new Date().toISOString(),
     };
     setUserResponses((prev) => [...prev, respuesta]);
   };
@@ -50,7 +50,7 @@ const PracticaDashboard: React.FC = () => {
   };
 
   const estado = tarjetas.map((palabra) => {
-    const respuesta = userResponses.find((r) => r.wordId === palabra.id);
+    const respuesta = userResponses.find((r) => r.vocabularyId === palabra.id);
     if (!respuesta) return "pending";
     return respuesta.correct ? "correct" : "incorrect";
   });

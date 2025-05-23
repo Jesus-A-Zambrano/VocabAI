@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { requireAuth } from '@clerk/express';
-import { getSuggestions } from '../controllers/vocabularyController'; // Import the controller function
+import { getSuggestions, addLearnedWord } from '../controllers/vocabularyController'; // Import the controller function
 
 const router = Router();
 
@@ -30,5 +30,39 @@ const router = Router();
  *         description: Internal server error
  */
 router.get('/suggestions', requireAuth({}), getSuggestions);
+
+/**
+ * @swagger
+ * /api/vocabulary/learned:
+ *   post:
+ *     summary: Register a learned word for the user
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               vocabularyId:
+ *                 type: integer
+ *               correct:
+ *                 type: boolean
+ *               learnedAt:
+ *                 type: string
+ *                 format: date-time
+ *     responses:
+ *       201:
+ *         description: Registro guardado
+ *       400:
+ *         description: Datos incompletos o incorrectos
+ *       404:
+ *         description: User profile or vocabulary word not found
+ *       500:
+ *         description: Error al guardar el registro
+ */
+router.post('/learned', requireAuth({}), addLearnedWord);
+
 
 export default router;

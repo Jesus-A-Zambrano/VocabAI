@@ -8,8 +8,8 @@ const getTarjetas = async (): Promise<Tarjeta[]> => {
 };
 
 // Obtener tarjetas por usuario
-const getTarjetasByUserId = async (userId: number, token: string): Promise<Tarjeta[]> => {
-    const tarjetas = await getData<Tarjeta[]>(`/tarjetas/${userId}`, {
+const getTarjetasByUserId = async (token: string): Promise<Tarjeta[]> => {
+    const tarjetas = await getData<Tarjeta[]>(`/vocabulary/suggestions`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -19,7 +19,7 @@ const getTarjetasByUserId = async (userId: number, token: string): Promise<Tarje
 
 // Enviar respuestas del usuario (POST)
 const postRespuestas = async (respuestas: any[], token: string): Promise<any> => {
-    return await postData<any, any[]>("/respuestas", respuestas, {
+    return await postData<any, any[]>("/vocabulary/learned", respuestas, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
