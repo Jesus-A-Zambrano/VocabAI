@@ -8,20 +8,12 @@ export class UserProfile {
     id!: string; // Clerk user ID
 
     @Column()
-    name!: string;
-
-    @Column()
     email!: string;
-
-    @Column({
-        nullable: true
-    })
-    age?: number;
 
     @Column({
         nullable: true // Assuming level might be optional initially
     })
-    level?: string; // Added level field
+    level!: string; // Added level field
 
     // One-to-many relationship with UserVocabulary
     @OneToMany(() => UserVocabulary, userVocabulary => userVocabulary.user)
