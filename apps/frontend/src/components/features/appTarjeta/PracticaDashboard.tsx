@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import TarjetaInteractiva from "./TarjetaPractica";
-import Card from "../../UI/Card";
+import Card from "../../uix/Card";
 import NavegationBar from "./SesionProgresion";
 import SesionResultado from "./SesionResultado";
 import { useTarjetasByUserId, useEnviarRespuestas } from "../../../hooks/useTarjeta";

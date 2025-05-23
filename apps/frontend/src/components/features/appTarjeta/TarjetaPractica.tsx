@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Input from "../../UI/input";
+import Input from "../../uix/input";
 import type { Tarjeta } from "../../../model/TarjetaModel";
 
 interface TarjetaInteractivaProps {

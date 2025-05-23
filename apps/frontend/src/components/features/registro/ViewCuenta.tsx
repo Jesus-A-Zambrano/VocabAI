@@ -1,4 +1,4 @@
-import Input from "../../UI/input";
+import Input from "../../uix/input";
                     
 interface ViewCuentaProps {
     name: string;

@@ -1,6 +1,6 @@
 import {useState} from "react";
-import Input from "../../UI/input"
-import Button from "../../UI/Button"
+import Input from "../../uix/input"
+import Button from "../../uix/Button"
 
 
 const FormLogin: React.FC = () => {
