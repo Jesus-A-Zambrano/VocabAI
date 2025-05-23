@@ -1,8 +1,9 @@
 import { useUsuario } from "../../../hooks/useUsuario";
-import {useUsuarioTest} from "../../../hooks/useUsuarioTest";
+
 
 const SideBar: React.FC = () => {
-    const { nombre, apellido, imagen, isLoaded, isSignedIn } = useUsuarioTest();
+    const { nombre, apellido, imagen, isLoaded, isSignedIn } = useUsuario();
+    console.log({nombre, apellido, imagen, isLoaded, isSignedIn});
 
     return (
         <aside className="w-64 bg-white p-6 shadow-md h-screen fixed ">
