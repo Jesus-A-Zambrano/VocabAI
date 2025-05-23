@@ -8,7 +8,7 @@ const SideBar: React.FC = () => {
     return (
         <aside className="w-64 bg-white p-6 shadow-md h-screen fixed ">
             <div className="mb-8">
-                <h1 className="text-2xl font-bold text-orange-600 mb-6 text-center">VocaBoost</h1>
+                <h1 className="text-2xl font-bold text-orange-600 mb-6 text-center">VocabIA</h1>
                 
                 <div className="flex items-center gap-4 mb-4">
                     {imagen ? (
