@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Registro from "./pages/Registro";
 import AppTarjeta from "./pages/AppTarjeta";
-import ProtectedRoute from "./components/ui/ProtectedRoute";
+import ProtectedRoute from "./components/UI/ProtectedRoute";
 
 function App() {
   return (

@@ -28,7 +28,7 @@ const CategoriaSelector: React.FC = () => {
                         className="text-sm text-orange-600 hover:underline"
                         onClick={() => setMostrarDropdown(!mostrarDropdown)}
                     >
-                        Agregar/Eliminar categoría
+                        Agregar categoría
                     </button>
 
                     {mostrarDropdown && (

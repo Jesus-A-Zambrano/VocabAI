@@ -1,15 +1,28 @@
+import { useUsuario } from "../../../hooks/useUsuario";
+
+
 const SideBar: React.FC = () => {
+    const { nombre, apellido, imagen, isLoaded, isSignedIn } = useUsuario();
+    console.log({nombre, apellido, imagen, isLoaded, isSignedIn});
+
     return (
         <aside className="w-64 bg-white p-6 shadow-md h-screen fixed ">
             <div className="mb-8">
                 <h1 className="text-2xl font-bold text-orange-600 mb-6 text-center">VocaBoost</h1>
                 
                 <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
-                        JG
-                    </div>
+                    {imagen ? (
+                        <img src={imagen} alt="Avatar" className="w-12 h-12 rounded-full object-cover" />
+                    ) : (
+                        <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
+                            {nombre?.[0] ?? "U"}
+                            {apellido?.[0] ?? ""}
+                        </div>
+                    )}
                     <div>
-                        <div className="font-semibold text-gray-800">Juan García</div>
+                        <div className="font-semibold text-gray-800">
+                            {isLoaded && isSignedIn ? `${nombre ?? ""} ${apellido ?? ""}`.trim() : "Cargando..."}
+                        </div>
                         <div className="text-sm text-gray-500">Nivel Intermedio</div>
                     </div>
                 </div>
