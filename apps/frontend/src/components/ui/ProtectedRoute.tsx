@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 interface Props {
   children: ReactNode;
 }
-const ProtectedRoute = ({ children }: Props) => {
+const ProtectedRoute: React.FC<Props> = ({ children }) => {
   return (
     <>
       <SignedIn>{children}</SignedIn>

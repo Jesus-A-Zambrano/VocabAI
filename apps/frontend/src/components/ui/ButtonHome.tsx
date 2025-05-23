@@ -7,12 +7,12 @@ interface Props {
   type?: "button" | "submit" | "reset";
   onClick?: () => void;
 }
-const ButtonHome = ({
+const ButtonHome: React.FC<Props> = ({
   secundario = false,
   children,
   type = "button",
   onClick,
-}: Props) => {
+}) => {
   return (
     <button
       type={type}

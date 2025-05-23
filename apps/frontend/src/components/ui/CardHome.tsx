@@ -8,7 +8,7 @@ interface Props {
   titulo: string;
   parrafo: string;
 }
-const CardHome = ({ titulo, parrafo, img }: Props) => {
+const CardHome: React.FC<Props>= ({ titulo, parrafo, img }) => {
   return (
     <div className={cn("w-[310px] bg-orange-100 p-6 rounded-xl")}>
       <img
