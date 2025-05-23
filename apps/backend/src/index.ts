@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import express, { Application, Request, Response, NextFunction, ErrorRequestHandler } from 'express';
+import express, { Application, Request, Response, NextFunction } from 'express';
 import * as dotenv from 'dotenv';
 import cors from 'cors'; // Import cors
 import { clerkMiddleware  } from '@clerk/express'; // Corrected import
@@ -8,10 +8,9 @@ import swaggerJsdoc from 'swagger-jsdoc';
 import usersRouter from './routes/users'; // Import the users router
 import vocabularyRouter from './routes/vocabulary'; // Import the vocabulary router
 import progressRouter from './routes/progress'; // Import the progress router
-import { ZodError } from 'zod';
 import config from './config'; // Import the config
-import { ApiError, BadRequestError, UnauthorizedError, NotFoundError, InternalServerError } from './utils/errors'; // Import custom errors
 import { AppDataSource } from './data-source'; // Import the data source
+import { errorHandler } from "./middlewares/errorHandler"; // Import the error handler
 
 dotenv.config();
 
@@ -160,29 +159,6 @@ AppDataSource.initialize()
         app.use('/api/users', usersRouter);
         app.use('/api/vocabulary', vocabularyRouter);
         app.use('/api/progress', progressRouter);
-
-        // Error handling middleware
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-          console.error(err);
-        
-          if (err instanceof ZodError) {
-            res.status(400).json({ errors: err.errors, message: 'Validation error' });
-            return;
-          }
-        
-          if (err.name === 'ClerkExpressRequireAuthError') {
-            res.status(401).json({ message: 'Unauthorized: Authentication required.' });
-            return;
-          }
-        
-          if (err instanceof ApiError) {
-            res.status(err.statusCode).json({ message: err.message });
-            return;
-          }
-        
-          res.status(500).json({ message: 'Something went wrong!' });
-        };
 
         app.use(errorHandler);
 
