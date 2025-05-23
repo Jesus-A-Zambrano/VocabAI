@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import express, { Application, Request, Response, NextFunction, ErrorRequestHandler } from 'express';
 import * as dotenv from 'dotenv';
+import cors from 'cors'; // Import cors
 import { clerkMiddleware  } from '@clerk/express'; // Corrected import
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
@@ -16,6 +17,9 @@ dotenv.config();
 
 const app: Application = express();
 const port = config.port; // Use port from config
+
+// Use cors middleware to allow requests from any origin
+app.use(cors());
 
 // Initialize TypeORM Data Source
 AppDataSource.initialize()

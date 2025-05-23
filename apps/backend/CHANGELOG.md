@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2024-07-30
+- Configured CORS to allow global access.
+
+### Added
+- Added `level` field to the `UserProfile` entity to store the user's English level.
+
 ## [0.2.0] - 2024-07-30
 
 ### Added
