@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { requireAuth } from '@clerk/express';
-import { getUserProfile, createUserProfile } from '../controllers/userController';
+import { getUserProfile, updateUserProfile } from '../controllers/userController';
 
 const router = Router();
 
@@ -66,6 +66,6 @@ router.get('/me', requireAuth({}), getUserProfile);
  *       500:
  *         description: Internal server error
  */
-router.post('/profile', requireAuth({}), createUserProfile);
+router.post('/profile', requireAuth({}), updateUserProfile);
 
 export default router;

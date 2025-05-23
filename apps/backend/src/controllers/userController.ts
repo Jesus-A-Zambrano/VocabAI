@@ -1,13 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
-import { findUserProfileById, saveUserProfile, UserProfileInput } from '../services/userService'; // Import service functions and types
+import { findUserProfileById, findOrCreateProfile, UserProfileInput, updateUserProfileService } from '../services/userService'; // Import service functions and types
 import { BadRequestError, NotFoundError } from '../utils/errors';
 
 // Define a Zod schema for a sample request body (still used for validation in controller)
 const userProfileSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
   email: z.string().email('Invalid email format'),
-  age: z.number().int().positive('Age must be a positive integer').optional(),
+  level: z.string()
 });
 
 export const getUserProfile = async (req: Request, res: Response, next: NextFunction) => {
@@ -29,14 +28,14 @@ export const getUserProfile = async (req: Request, res: Response, next: NextFunc
     }
 };
 
-export const createUserProfile = async (req: Request, res: Response, next: NextFunction) => {
+export const updateUserProfile = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Validate and parse with Zod
         const userProfileInput: UserProfileInput = userProfileSchema.parse(req.body);
         const userId = (req as any).auth.userId; // Get user ID from Clerk auth
 
         // Use service function to save the user profile
-        const savedProfile = await saveUserProfile(userId, userProfileInput);
+        const savedProfile = await updateUserProfileService(userId, userProfileInput);
 
         res.status(200).json({ message: 'User profile processed', profile: savedProfile });
     } catch (error) {

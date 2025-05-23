@@ -24,6 +24,13 @@ export class UserVocabulary {
     })
     learnedAt: Date;
 
+    @Column({
+        type: "boolean",
+        default: false,
+        comment: "Indica si el usuario acertó (true) o falló (false) al aprender la palabra"
+    })
+    correct: boolean;
+
     // We can also add a unique constraint to prevent a user from learning the same word multiple times
     // @Index(["user", "vocabulary"], { unique: true })
 }
