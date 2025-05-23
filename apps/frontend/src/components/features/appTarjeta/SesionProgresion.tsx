@@ -3,7 +3,7 @@ import React from 'react';
 type WordStatus = 'correct' | 'incorrect' | 'in-progress' | 'pending';
 
 interface SesionProgresionProps {
-    wordStatuses: WordStatus[]; // array de 20 estados
+    wordStatus: WordStatus[]; 
 }
 
 const getColor = (status: WordStatus) => {
@@ -20,12 +20,12 @@ const getColor = (status: WordStatus) => {
     }
 };
 
-const SesionProgresion: React.FC<SesionProgresionProps> = ({ wordStatuses }) => {
+const SesionProgresion: React.FC<SesionProgresionProps> = ({ wordStatus }) => {
 
-    const completedCount = wordStatuses.filter(
+    const completedCount = wordStatus.filter(
         (status) => status === 'correct' || status === 'incorrect'
     ).length;
-    const progressPercent = (completedCount / wordStatuses.length) * 100;
+    const progressPercent = (completedCount / wordStatus.length) * 100;
 
     return (
         <div className="bg-white p-6 rounded-xl w-full mt-8 border-orange-600 border-2">
@@ -39,11 +39,11 @@ const SesionProgresion: React.FC<SesionProgresionProps> = ({ wordStatuses }) => 
             />
         </div>
 
-        <div className="grid grid-cols-10 gap-2 text-center">
-            {wordStatuses.map((status, index) => (
+        <div className="flex justify-center  gap-8 text-center grap flex-wrap">
+            {wordStatus.map((status, index) => (
             <div
                 key={index}
-                className={`rounded-md py-2 font-semibold ${getColor(status)}`}
+                className={`rounded-md py-2 font-semibold w-20 ${getColor(status)}`}
             >
                 {index + 1}
             </div>
@@ -51,7 +51,7 @@ const SesionProgresion: React.FC<SesionProgresionProps> = ({ wordStatuses }) => 
         </div>
 
         <div className="text-right mt-2 font-medium text-orange-500">
-            {completedCount}/{wordStatuses.length}
+            {completedCount}/{wordStatus.length}
         </div>
         </div>
     );
