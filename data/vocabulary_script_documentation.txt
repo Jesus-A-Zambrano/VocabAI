@@ -1,0 +1,181 @@
+# Documentación: Sistema de Procesamiento y Enriquecimiento de Vocabulario
+
+## Descripción General
+
+Este script procesa datos de vocabulario en inglés, verificando las palabras, asignando categorías gramaticales correctas y añadiendo definiciones. El resultado es un conjunto de datos enriquecido y limpio para aplicaciones educativas de aprendizaje de idiomas.
+
+## Tecnologías Utilizadas
+
+- Python 3.x: Lenguaje de programación base
+- pandas: Manipulación y análisis de datos
+- NLTK (Natural Language Toolkit): Procesamiento de lenguaje natural y acceso a WordNet
+- spaCy: Análisis lingüístico avanzado
+- re: Expresiones regulares para limpieza de texto
+
+## Estructura del Código
+
+### 1. Instalación de Dependencias
+
+```python
+# Instalar dependencias necesarias
+required_packages = ['spacy', 'nltk']
+for package in required_packages:
+    try:
+        __import__(package.split('==')[0])
+    except ImportError:
+        print(f"Instalando {package}...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+```
+
+- Propósito: Garantiza que todas las bibliotecas necesarias estén instaladas.
+- Proceso: Verifica cada paquete e instala los faltantes.
+
+
+
+
+
+### 2. Descarga de Recursos Lingüísticos
+
+```python
+import nltk
+for resource in ['wordnet', 'words', 'brown']:
+    try:
+        nltk.data.find(f'corpora/{resource}')
+    except LookupError:
+        nltk.download(resource)
+```
+
+- Propósito: Asegura la disponibilidad de recursos lingüísticos para NLTK.
+- Recursos utilizados:
+  - `wordnet`: Diccionario y base de datos léxica
+  - `words`: Lista de palabras en inglés
+  - `brown`: Corpus para entrenamiento
+
+
+
+
+
+### 3. Funciones Principales
+
+#### 3.1 Determinación de Categoría Gramatical (`get_pos_description`)
+
+```python
+def get_pos_description(word):
+    """Determina la categoría gramatical usando múltiples fuentes"""
+    # [Código implementado]
+```
+
+- Entrada: Palabra en inglés
+- Salida: Descripción de la categoría gramatical en español
+- Métodos utilizados (en orden de prioridad):
+  1. Análisis con spaCy
+  2. Consulta a WordNet
+  3. Etiquetado con NLTK POS tagger
+  4. Análisis de sufijos de la palabra
+  5. Asignación de valor por defecto (Sustantivo)
+
+#### 3.2 Obtención de Definiciones (`get_definition`)
+
+```python
+def get_definition(word):
+    """Obtiene una definición para la palabra desde múltiples fuentes"""
+    # [Código implementado]
+```
+
+- Entrada: Palabra en inglés
+- Salida: Definición de la palabra (limitada a 150 caracteres)
+- Fuentes de definición:
+  1. WordNet (primera opción)
+  2. Definición generada basada en categoría gramatical (si WordNet falla)
+
+#### 3.3 Procesamiento Principal (`verify_and_enrich`)
+
+```python
+def verify_and_enrich():
+    # [Código implementado]
+```
+
+- Propósito: Coordina todo el proceso de carga, procesamiento y enriquecimiento de datos
+- Fases:
+  1. Detección de separadores y carga de archivos
+  2. Join de tablas de palabras y posiciones
+  3. Verificación y filtrado de palabras inglesas válidas
+  4. Asignación de categorías gramaticales y definiciones
+  5. Conversión de niveles CEFR a sistema simplificado
+  6. Limpieza final y eliminación de columnas innecesarias
+
+
+
+
+
+
+## Flujo de Procesamiento
+
+1. Carga de Datos:
+   - Detecta automáticamente el separador de los archivos CSV
+   - Carga los archivos de palabras y categorías gramaticales
+   - Convierte IDs a formato numérico para join consistente
+
+2. Verificación de Palabras:
+   - Filtra palabras que no existen en WordNet
+   - Elimina entradas inválidas o no reconocidas
+
+3. Enriquecimiento de Datos:
+   - Asigna categoría gramatical a cada palabra utilizando múltiples métodos
+   - Obtiene definición desde WordNet o genera una definición básica
+   - Convierte niveles CEFR a sistema simplificado (Principiante/Intermedio/Avanzado)
+
+4. Limpieza Final:
+   - Elimina filas con datos incompletos
+   - Elimina columnas innecesarias (`word_pos_id`, `pos_tag_id`, `stem_word_id`, `lemma_word_id`, `tag`)
+   - Ordena por nivel y alfabéticamente
+   - Elimina registros duplicados basados en palabra y categoría gramatical
+
+5. Exportación:
+   - Guarda el dataset final en formato CSV con codificación UTF-8-sig para preservar acentos
+
+## Estructura del Dataset Final
+
+word: Palabra en inglés
+word_in_spanish: Traducción al español (conservada del dataset original)
+descripcion: Categoría gramatical en formato descriptivo (Sustantivo, Verbo, etc.)
+category_titles: Definición de la palabra (hasta 150 caracteres)
+nivel: Nivel de dificultad simplificado (Principiante, Intermedio, Avanzado)
+(Otras columnas]: Otras columnas presentes en el dataset original que no fueron eliminadas
+
+
+
+
+
+## Aspectos Clave del Procesamiento
+
+1. Multimétodo para categorías gramaticales: Utiliza hasta 5 métodos diferentes para garantizar que cada palabra tenga una categoría gramatical asignada.
+
+2. Verificación robusta: Elimina palabras que no existen en diccionarios reconocidos, asegurando que solo se incluyan palabras válidas en inglés.
+
+3. Definiciones completas: Proporciona definiciones significativas para todas las palabras, mejorando el valor educativo del dataset.
+
+4. Sistema de niveles simplificado: Convierte la escala CEFR (A1-C2) a una clasificación más accesible (Principiante, Intermedio, Avanzado).
+
+5. Limpieza exhaustiva: Garantiza que no haya campos vacíos en las columnas clave, eliminando filas incompletas y columnas innecesarias.
+
+## Personalización y Extensión
+
+El script puede ser adaptado para:
+- Soportar idiomas adicionales
+- Ampliar la fuente de definiciones
+- Modificar el sistema de clasificación de niveles
+- Añadir campos adicionales (como ejemplos de uso)
+- Integrar con otras fuentes de datos lingüísticos
+
+## Requisitos del Sistema
+
+- Python 3.6+
+- Espacio en disco: ~500MB (principalmente para modelos de spaCy y recursos de NLTK)
+- Memoria RAM: 2GB+ recomendado para procesar datasets grandes
+
+## Limitaciones
+
+- Las categorías gramaticales asignadas pueden no ser 100% precisas para palabras muy técnicas o poco comunes
+- Las definiciones se limitan a 150 caracteres y provienen principalmente de WordNet
+- Dependencia de recursos de terceros (NLTK, spaCy) que requieren descargas
