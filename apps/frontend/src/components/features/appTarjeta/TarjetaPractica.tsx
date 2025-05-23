@@ -71,7 +71,8 @@ const TarjetaInteractiva: React.FC<TarjetaInteractivaProps> = ({
                     <h2 className="text-3xl font-bold text-gray-800 mt-2">{tarjeta.word}</h2>
 
                     <div className="bg-gray-100 p-4 mt-4 rounded">
-                        <p className="font-semibold text-sm text-gray-700 mb-1">Ejemplo de uso:</p>
+                        <p className="font-semibold text-sm text-gray-700 mb-1">Description:</p>
+                        <p className="text-sm text-gray-600">{tarjeta.description}</p>
                     </div>
 
                     {estado === 'incorrecto' && (

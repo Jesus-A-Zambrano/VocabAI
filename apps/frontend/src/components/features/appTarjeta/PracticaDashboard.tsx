@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import SelectorCategoria from "./SelectorCategoria";
 import TarjetaInteractiva from "./TarjetaPractica";
 import Card from "../../UI/Card";
 import NavegationBar from "./SesionProgresion";
@@ -68,7 +67,7 @@ const PracticaDashboard: React.FC = () => {
         <Card titulo="Tarjeta" mensaje="Memoriza con tarjetas de vocabulario" color="purple" />
       </div>
 
-      <SelectorCategoria />
+      {/* <SelectorCategoria /> */}
 
       {!empezado ? (
         <div className="flex flex-col items-center justify-center mt-16">
