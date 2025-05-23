@@ -16,6 +16,10 @@ export class UserProfile {
     level!: string; // Added level field
 
     // One-to-many relationship with UserVocabulary
-    @OneToMany(() => UserVocabulary, userVocabulary => userVocabulary.user)
-    learnedVocabulary!: UserVocabulary[];
+    @OneToMany(
+        () => UserVocabulary,
+        uv => uv.user,
+        { cascade: ["remove"] }       // si borras un usuario, elimina sus registros
+      )
+      learnedVocabulary!: UserVocabulary[];
 }

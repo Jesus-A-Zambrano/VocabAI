@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2025-05-23
+
+### Changed
+- Removed the mock in the vocabulary suggestion service; now it queries the repository directly.
+- Vocabulary suggestions are now filtered by user level and show the 10 most frequent words.
+- Words already learned or previously suggested are no longer shown to the user.
+- Fixed access to learned vocabulary IDs in the `UserVocabulary` entity.
+
+### Added
+- Added `updateUserProfile` function to update user profiles safely.
+- Used Zod's `safeParse` for user profile validation before saving updates.
+
 ## [0.3.0] - 2025-05-23
 
 ### Added
