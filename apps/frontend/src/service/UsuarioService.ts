@@ -1,4 +1,4 @@
-import { getData, postData } from "../api";
+import { getData } from "../api";
 import type { Usuario } from "../model/UserModel";
 
 // Obtener todos los usuarios
