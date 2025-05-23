@@ -99,9 +99,14 @@ const TarjetaInteractiva: React.FC = () => {
                     <p className="text-gray-500">{tarjetaActual.pronunciacion}</p>
 
                     <div className="bg-gray-100 p-4 mt-4 rounded">
+<<<<<<< Updated upstream
                         <p className="font-semibold text-sm text-gray-700 mb-1">Ejemplo de uso:</p>
                         <p>{tarjetaActual.ejemplo}</p>
                         <p className="text-sm italic text-gray-500 mt-1">{tarjetaActual.ejemploTraduccion}</p>
+=======
+                        <p className="font-semibold text-sm text-gray-700 mb-1">Description:</p>
+                        <p className="text-sm text-gray-600">{tarjeta.description}</p>
+>>>>>>> Stashed changes
                     </div>
 
                     <button
