@@ -1,4 +1,4 @@
-import Input from "../../UI/input";
+import Input from "../../ui/input";
                     
 interface ViewCuentaProps {
     name: string;

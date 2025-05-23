@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import SelectorCategoria from "./SelectorCategoria";
 import TarjetaInteractiva from "./TarjetaPractica";
-import Card from "../../UI/Card";
+import Card from "../../ui/Card";
 import NavegationBar from "./SesionProgresion";
 import SesionResultado from "./SesionResultado";
 import { useTarjetasByUserId, useEnviarRespuestas } from "../../../hooks/useTarjeta";
