@@ -1,6 +1,6 @@
 import BannerLayout from "../components/layout/Home/BannerLayout";
 import ArticleHome from "../components/layout/Home/ArticleHome";
-import CardHome from "../components/UI/CardHome";
+import CardHome from "../components/ui/CardHome";
 import iconFoco from "../assets/icons/foco.png";
 import iconTablero from "../assets/icons/tablero.png";
 import iconBarras from "../assets/icons/barras.png";
