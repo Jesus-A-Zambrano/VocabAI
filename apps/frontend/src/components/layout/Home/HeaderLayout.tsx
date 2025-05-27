@@ -1,5 +1,5 @@
 import { cn } from "clsx-for-tailwind";
-import ButtonHome from "../../UI/ButtonHome";
+import ButtonHome from "../../ui/ButtonHome";
 import { Link, useLocation } from "react-router";
 import { useNavigate } from "react-router";
 import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";

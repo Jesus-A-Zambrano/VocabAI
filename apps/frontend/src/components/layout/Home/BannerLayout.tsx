@@ -1,4 +1,4 @@
-import ButtonHome from "../../UI/ButtonHome";
+import ButtonHome from "../../ui/ButtonHome";
 import imagenCardBanner from "../../../assets/imagenes/Tarejeta de Banner.png";
 import { cn } from "clsx-for-tailwind";
 import { useNavigate } from "react-router";
