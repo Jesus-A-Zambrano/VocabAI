@@ -24,8 +24,9 @@ export class UserVocabulary {
   @JoinColumn({ name: "userId" })
   user!: UserProfile;
 
+  // Use string to match UserProfile's primary key type
   @RelationId((uv: UserVocabulary) => uv.user)
-  userId!: number;
+  userId!: string;
 
   @ManyToOne(
     () => Vocabulary,
