@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2025-06-03
+
+### Fixed
+- Aligned `userId` type with `UserProfile.id` in `UserVocabulary`.
+
 ## [0.4.0] - 2025-05-23
 
 ### Changed
