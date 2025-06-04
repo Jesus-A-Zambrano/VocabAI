@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Aligned `userId` type with `UserProfile.id` in `UserVocabulary`.
 
+## [0.4.2] - 2025-06-04
+
+### Fixed
+- Corrected SQLite path to work in production builds
+
 ## [0.4.0] - 2025-05-23
 
 ### Changed
